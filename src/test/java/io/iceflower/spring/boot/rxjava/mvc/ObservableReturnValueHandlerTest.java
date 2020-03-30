@@ -1,6 +1,5 @@
 package io.iceflower.spring.boot.rxjava.mvc;
 
-import io.iceflower.spring.boot.rxjava.async.SingleDeferredResultTest;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.functions.Function;
 import java.util.ArrayList;

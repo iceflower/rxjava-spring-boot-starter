@@ -19,6 +19,8 @@ import io.iceflower.spring.boot.rxjava.mvc.ObservableReturnValueHandler;
 import io.iceflower.spring.boot.rxjava.mvc.SingleReturnValueHandler;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Single;
+import java.util.ArrayList;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -29,10 +31,6 @@ import org.springframework.web.method.support.AsyncHandlerMethodReturnValueHandl
 import org.springframework.web.method.support.HandlerMethodReturnValueHandler;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
-
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * The RxJava Spring MVC integration auto configuration.

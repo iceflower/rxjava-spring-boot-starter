@@ -16,10 +16,9 @@
 package io.iceflower.spring.boot.rxjava.async;
 
 import io.reactivex.rxjava3.core.Observable;
+import java.util.List;
 import org.springframework.util.Assert;
 import org.springframework.web.context.request.async.DeferredResult;
-
-import java.util.List;
 
 /**
  * A specialized {@link DeferredResult} that handles {@link Observable} type.

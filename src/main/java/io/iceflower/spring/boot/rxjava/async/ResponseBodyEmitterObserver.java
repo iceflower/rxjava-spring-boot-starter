@@ -18,10 +18,9 @@ package io.iceflower.spring.boot.rxjava.async;
 
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.observers.DisposableObserver;
+import java.io.IOException;
 import org.springframework.http.MediaType;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter;
-
-import java.io.IOException;
 
 
 /**

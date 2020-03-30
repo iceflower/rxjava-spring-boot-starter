@@ -2,7 +2,6 @@ package io.iceflower.spring.boot.rxjava;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.iceflower.spring.boot.rxjava.mvc.SingleReturnValueHandlerTest;
 import io.reactivex.rxjava3.core.Observable;
 import java.util.Date;
 import java.util.List;

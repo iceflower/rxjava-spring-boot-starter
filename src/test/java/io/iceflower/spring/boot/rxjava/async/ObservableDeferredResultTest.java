@@ -8,7 +8,9 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +27,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
 
 @ExtendWith(SpringExtension.class)
@@ -86,78 +86,99 @@ public class ObservableDeferredResultTest {
       }));
     }
   }
+  @Nested
+  @DisplayName("ObservableDeferredResult 테스트")
+  class Describe_of_ObservableDeferredResult {
+    @Nested
+    @DisplayName("공백 응답을 반환해야 할 경우")
+    class Context_of_retrive_empty_response {
+      @Test
+      @DisplayName("정상적으로 공백 응답을 반환한다")
+      void it_returns_empty_response() {
+        // when
+        ResponseEntity<List> response = restTemplate.getForEntity("/empty", List.class);
 
-  @Test
-  public void shouldRetrieveEmptyResponse() {
+        // then
+        Assertions.assertNotNull(response);
+        Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
+        Assertions.assertEquals(Collections.emptyList(), response.getBody());
+      }
+    }
+    @Nested
+    @DisplayName("Single value를 반환해야 할 경우")
+    class Context_of_retrive_single_value {
+      @Test
+      @DisplayName("정상적으로 Single value를 반환한다")
+      void it_returns_single_value() {
+        // when
+        ResponseEntity<List> response = restTemplate.getForEntity("/single", List.class);
 
-    // when
-    ResponseEntity<List> response = restTemplate.getForEntity("/empty", List.class);
+        // then
+        Assertions.assertNotNull(response);
+        Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
+        Assertions.assertEquals(Collections.singletonList("single value"), response.getBody());
+      }
+    }
+    @Nested
+    @DisplayName("multiple value를 반환해야 할 경우")
+    class Context_of_retrive_multiple_values {
+      @Test
+      @DisplayName("정상적으로 multiple value를 반환한다")
+      void it_returns_multiple_values() {
+        // when
+        ResponseEntity<List> response = restTemplate.getForEntity("/multiple", List.class);
 
-    // then
-    assertNotNull(response);
-    assertEquals(HttpStatus.OK, response.getStatusCode());
-    assertEquals(Collections.emptyList(), response.getBody());
+        // then
+        Assertions.assertNotNull(response);
+        Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
+        Assertions.assertEquals(Arrays.asList("multiple", "values"), response.getBody());
+      }
+    }
+    @Nested
+    @DisplayName("Json으로 직렬화한 List 값을 반환해야 할 경우")
+    class Context_of_retrive_json_serialized_list_values {
+      @Test
+      @DisplayName("정상적으로 Json으로 직렬화한 List 값을 반환한다")
+      void it_returns_json_serialized_list_values() {
+        // when
+        ResponseEntity<List<EventDto>> response = restTemplate.exchange("/event", HttpMethod.GET, null,
+            new ParameterizedTypeReference<List<EventDto>>() {});
+
+        // then
+        Assertions.assertNotNull(response);
+        Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
+        Assertions.assertEquals(2, response.getBody().size());
+        Assertions.assertEquals("JavaOne", response.getBody().get(1).getName());
+      }
+    }
+    @Nested
+    @DisplayName("에러값을 반환해야 할 경우")
+    class Context_of_retrive_error_response {
+      @Test
+      @DisplayName("정상적으로 에러값을 반환한다")
+      void it_returns_error_response() {
+        // when
+        ResponseEntity<Object> response = restTemplate.getForEntity("/throw", Object.class);
+
+        // then
+        Assertions.assertNotNull(response);
+        Assertions.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+      }
+    }
+
+    @Nested
+    @DisplayName("타임아웃이 발생했을 경우")
+    class Context_of_timeout_connection {
+      @Test
+      @DisplayName("정상적으로 에러값을 반환한다")
+      void it_returns_timeout_error() {
+        // when
+        ResponseEntity<Object> response = restTemplate.getForEntity("/timeout", Object.class);
+
+        // then
+        Assertions.assertNotNull(response);
+        Assertions.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+      }
+    }
   }
-
-  @Test
-  public void shouldRetrieveSingleValue() {
-
-    // when
-    ResponseEntity<List> response = restTemplate.getForEntity("/single", List.class);
-
-    // then
-    assertNotNull(response);
-    assertEquals(HttpStatus.OK, response.getStatusCode());
-    assertEquals(Collections.singletonList("single value"), response.getBody());
-  }
-
-  @Test
-  public void shouldRetrieveMultipleValues() {
-
-    // when
-    ResponseEntity<List> response = restTemplate.getForEntity("/multiple", List.class);
-
-    // then
-    assertNotNull(response);
-    assertEquals(HttpStatus.OK, response.getStatusCode());
-    assertEquals(Arrays.asList("multiple", "values"), response.getBody());
-  }
-
-  @Test
-  public void shouldRetrieveJsonSerializedListValues() {
-
-    // when
-    ResponseEntity<List<EventDto>> response = restTemplate.exchange("/event", HttpMethod.GET, null,
-        new ParameterizedTypeReference<List<EventDto>>() {});
-
-    // then
-    assertNotNull(response);
-    assertEquals(HttpStatus.OK, response.getStatusCode());
-    assertEquals(2, response.getBody().size());
-    assertEquals("JavaOne", response.getBody().get(1).getName());
-  }
-
-  @Test
-  public void shouldRetrieveErrorResponse() {
-
-    // when
-    ResponseEntity<Object> response = restTemplate.getForEntity("/throw", Object.class);
-
-    // then
-    assertNotNull(response);
-    assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
-  }
-
-  @Test
-  public void shouldTimeoutOnConnection() {
-
-    // when
-    ResponseEntity<Object> response = restTemplate.getForEntity("/timeout", Object.class);
-
-    // then
-    assertNotNull(response);
-    assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
-  }
-
-
 }

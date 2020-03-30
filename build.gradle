@@ -1,41 +1,49 @@
-apply plugin: 'java'
+plugins {
+    id 'java'
+    id 'maven'
+    id 'org.springframework.boot' version '2.2.4.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.6.RELEASE'
+}
+
+
 apply plugin: 'idea'
-
-apply from: 'libraries.gradle'
-
 
 sourceCompatibility = 11
 
 group = "io.iceflower"
 archivesBaseName="rxjava-spring-boot-starter"
 
+
+
+bootJar {
+    enabled = false
+}
+
+//jar {
+//    manifest {
+//        attributes 'Implementation-Title': 'rxjava-spring-cloud-starter'
+//    }
+//}
+
 jar {
-    manifest {
-        attributes 'Implementation-Title': 'rxjava-spring-cloud-starter'
-    }
+    enabled = true
 }
 
 repositories {
     mavenCentral()
 }
 
-compileJava {
-    options.fork = true
+test {
+    useJUnitPlatform()
 }
 
-test {
-    exclude '**/*'
-}
 
 dependencies {
 
-    compile (libraries.springBootConfigurationProcessor) {
-        ext.optional = true
-    }
-    compile (libraries.springBootWeb)
-    compile (libraries.rxJava)
-    testCompile (libraries.springBootTest)
-
+    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+    compile 'io.reactivex.rxjava3:rxjava:3.0.0'
+    compile 'org.springframework.boot:spring-boot-starter-web'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.5.2")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.5.2")
     testRuntimeOnly("org.junit.platform:junit-platform-engine:1.5.2")

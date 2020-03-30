@@ -5,11 +5,18 @@ import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.functions.Function;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
+
+@Configuration
+@EnableAutoConfiguration
+@RestController
 public class MockDeferredResultObserverRestController {
   @RequestMapping(method = RequestMethod.GET, value = "/empty")
   public ObservableDeferredResult<String> empty() {

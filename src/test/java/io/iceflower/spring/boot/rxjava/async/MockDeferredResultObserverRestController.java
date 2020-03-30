@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
-public class MockRestController {
+public class MockDeferredResultObserverRestController {
   @RequestMapping(method = RequestMethod.GET, value = "/empty")
   public ObservableDeferredResult<String> empty() {
     return new ObservableDeferredResult<String>(Observable.<String>empty());

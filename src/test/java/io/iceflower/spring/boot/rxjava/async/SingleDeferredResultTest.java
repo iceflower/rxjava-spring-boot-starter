@@ -121,8 +121,8 @@ public class SingleDeferredResultTest {
     @DisplayName("오류가 발생했을 경우")
     class Context_with_retrieve_error_response {
       @Test
-      @DisplayName("성공적으로 값을 받는다")
-      void it_returns_successfully() {
+      @DisplayName("500 에러를 받는다")
+      void it_returns_http_500_code() {
 
         // when
         ResponseEntity<Object> response = restTemplate.getForEntity("/throw", Object.class);

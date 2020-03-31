@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,40 +58,65 @@ public class ObservableSseEmitterTest {
     }
   }
 
-  @Test
-  public void shouldRetrieveSse() {
+  @Nested
+  @DisplayName("ObservableDeferredResult 테스트")
+  class Describe_of_ObservableSseEmitter {
+    @Nested
+    @DisplayName("SSE 데이터를 전송받는 경우")
+    class Context_with_retrive_sse_data {
+      @Test
+      @DisplayName("데이터를 성공적으로 전달받는다")
+      void it_returns_successfully() {
+        // when
+        ResponseEntity<String> response = restTemplate.getForEntity("/sse", String.class);
 
-    // when
-    ResponseEntity<String> response = restTemplate.getForEntity("/sse", String.class);
+        // then
+        Assertions.assertNotNull(response);
+        Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
+        Assertions.assertEquals("data:single value\n\n", response.getBody());
+      }
+    }
 
-    // then
-    Assertions.assertNotNull(response);
-    Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
-    Assertions.assertEquals("data:single value\n\n", response.getBody());
+    @Nested
+    @DisplayName("SSE 메시지를 여러개 받는 경우")
+    class Context_with_retrive_multiple_messages {
+      @Test
+      @DisplayName("데이터를 성공적으로 전달받는다")
+      void it_returns_successfully() {
+
+        // when
+        ResponseEntity<String> response = restTemplate.getForEntity("/messages", String.class);
+
+        // then
+        Assertions.assertNotNull(response);
+        Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
+        Assertions.assertEquals("data:message 1\n\ndata:message 2\n\ndata:message 3\n\n", response.getBody());
+      }
+    }
+
+    @Nested
+    @DisplayName("JSON으로 직렬화된 SSE 메시지를 여러개 받는 경우")
+    class Context_with_retrive_json_over_sse_multiple_messages {
+      @Test
+      @DisplayName("데이터를 성공적으로 전달받는다")
+      void it_returns_successfully() {
+
+        // when
+        ResponseEntity<String> response = restTemplate.getForEntity("/events", String.class);
+
+        // then
+        Assertions.assertNotNull(response);
+        Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
+      }
+
+    }
   }
 
-  @Test
-  public void shouldRetrieveSseWithMultipleMessages() {
 
-    // when
-    ResponseEntity<String> response = restTemplate.getForEntity("/messages", String.class);
 
-    // then
-    Assertions.assertNotNull(response);
-    Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
-    Assertions.assertEquals("data:message 1\n\ndata:message 2\n\ndata:message 3\n\n", response.getBody());
-  }
 
-  @Test
-  public void shouldRetrieveJsonOverSseWithMultipleMessages() {
 
-    // when
-    ResponseEntity<String> response = restTemplate.getForEntity("/events", String.class);
 
-    // then
-    Assertions.assertNotNull(response);
-    Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
-  }
 
 
 

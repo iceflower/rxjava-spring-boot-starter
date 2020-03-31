@@ -5,6 +5,7 @@ import io.reactivex.rxjava3.core.Single;
 import java.util.Date;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,50 +60,78 @@ public class SingleDeferredResultTest {
     }
   }
 
-  @Test
-  public void shouldRetrieveSingleValue() {
 
-    // when
-    ResponseEntity<String> response = restTemplate.getForEntity("/single", String.class);
+  @Nested
+  @DisplayName("SingleDeferredResult 테스트")
+  class Describe_of_SingleDeferredResult {
 
-    // then
-    Assertions.assertNotNull(response);
-    Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
-    Assertions.assertEquals("single value", response.getBody());
-  }
+    @Nested
+    @DisplayName("단일 값을 받을 경우")
+    class Context_with_retrive_single_value {
 
-  @Test
-  public void shouldRetrieveSingleValueWithStatusCode() {
+      @Test
+      @DisplayName("성공적으로 값을 받는다")
+      void it_returns_successfully() {
+        // when
+        ResponseEntity<String> response = restTemplate.getForEntity("/single", String.class);
 
-    // when
-    ResponseEntity<String> response = restTemplate.getForEntity("/singleWithResponse", String.class);
+        // then
+        Assertions.assertNotNull(response);
+        Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
+        Assertions.assertEquals("single value", response.getBody());
+      }
+    }
 
-    // then
-    Assertions.assertNotNull(response);
-    Assertions.assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-    Assertions.assertEquals("single value", response.getBody());
-  }
+    @Nested
+    @DisplayName("단일 값과 HTTP 상태코드를 함께 받을 경우")
+    class Context_with_retrieve_single_value_with_status_code {
 
-  @Test
-  public void shouldRetrieveJsonSerializedPojoValue() {
+      @Test
+      @DisplayName("성공적으로 값을 받는다")
+      void it_returns_successfully() {
 
-    // when
-    ResponseEntity<EventDto> response = restTemplate.getForEntity("/event", EventDto.class);
+        // when
+        ResponseEntity<String> response = restTemplate.getForEntity("/singleWithResponse", String.class);
 
-    // then
-    Assertions.assertNotNull(response);
-    Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
-    Assertions.assertEquals("Spring.io", response.getBody().getName());
-  }
+        // then
+        Assertions.assertNotNull(response);
+        Assertions.assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        Assertions.assertEquals("single value", response.getBody());
+      }
+    }
 
-  @Test
-  public void shouldRetrieveErrorResponse() {
+    @Nested
+    @DisplayName("json으로 직렬화한 값을 받을 경우")
+    class Context_with_json_serialized_pojo_value {
+      @Test
+      @DisplayName("성공적으로 값을 받는다")
+      void it_returns_successfully() {
 
-    // when
-    ResponseEntity<Object> response = restTemplate.getForEntity("/throw", Object.class);
+        // when
+        ResponseEntity<EventDto> response = restTemplate.getForEntity("/event", EventDto.class);
 
-    // then
-    Assertions.assertNotNull(response);
-    Assertions.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+        // then
+        Assertions.assertNotNull(response);
+        Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
+        Assertions.assertEquals("Spring.io", response.getBody().getName());
+      }
+    }
+
+    @Nested
+    @DisplayName("오류가 발생했을 경우")
+    class Context_with_retrieve_error_response {
+      @Test
+      @DisplayName("성공적으로 값을 받는다")
+      void it_returns_successfully() {
+
+        // when
+        ResponseEntity<Object> response = restTemplate.getForEntity("/throw", Object.class);
+
+        // then
+        Assertions.assertNotNull(response);
+        Assertions.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+      }
+
+    }
   }
 }

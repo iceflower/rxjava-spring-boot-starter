@@ -63,7 +63,7 @@ public class ObservableSseEmitterTest {
   class Describe_of_ObservableSseEmitter {
     @Nested
     @DisplayName("SSE 데이터를 전송받는 경우")
-    class Context_with_retrive_sse_data {
+    class Context_with_retrieve_sse_data {
       @Test
       @DisplayName("데이터를 성공적으로 전달받는다")
       void it_returns_successfully() {
@@ -79,7 +79,7 @@ public class ObservableSseEmitterTest {
 
     @Nested
     @DisplayName("SSE 메시지를 여러개 받는 경우")
-    class Context_with_retrive_multiple_messages {
+    class Context_with_retrieve_multiple_messages {
       @Test
       @DisplayName("데이터를 성공적으로 전달받는다")
       void it_returns_successfully() {
@@ -96,7 +96,7 @@ public class ObservableSseEmitterTest {
 
     @Nested
     @DisplayName("JSON으로 직렬화된 SSE 메시지를 여러개 받는 경우")
-    class Context_with_retrive_json_over_sse_multiple_messages {
+    class Context_with_retrieve_json_over_sse_multiple_messages {
       @Test
       @DisplayName("데이터를 성공적으로 전달받는다")
       void it_returns_successfully() {

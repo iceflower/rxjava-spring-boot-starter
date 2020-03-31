@@ -29,6 +29,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
 
+/**
+ * A unit test code of ObservableDeferredResult
+ *
+ * @author Jakub Narloch
+ * @author 김영근
+ */
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(
     classes = ObservableDeferredResultTest.Application.class,
@@ -36,7 +42,6 @@ import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
 )
 @DisplayName("ObservableDeferredResult 클래스")
 public class ObservableDeferredResultTest {
-
 
   @Autowired
   private TestRestTemplate restTemplate;
@@ -90,10 +95,10 @@ public class ObservableDeferredResultTest {
   @DisplayName("ObservableDeferredResult 는")
   class Describe_of_ObservableDeferredResult {
     @Nested
-    @DisplayName("공백 응답을 반환해야 할 경우")
+    @DisplayName("공백 응답을 전달해야 할 때")
     class Context_of_retrive_empty_response {
       @Test
-      @DisplayName("정상적으로 공백 응답을 반환한다")
+      @DisplayName("정상적으로 공백 응답을 돌려준다")
       void it_returns_empty_response() {
         // when
         ResponseEntity<List> response = restTemplate.getForEntity("/empty", List.class);
@@ -108,7 +113,7 @@ public class ObservableDeferredResultTest {
     @DisplayName("Single value를 반환해야 할 때")
     class Context_with_retrive_single_value {
       @Test
-      @DisplayName("정상적으로 Single value를 반환한다")
+      @DisplayName("정상적으로 Single value를 돌려준다")
       void it_returns_single_value() {
         // when
         ResponseEntity<List> response = restTemplate.getForEntity("/single", List.class);
@@ -123,7 +128,7 @@ public class ObservableDeferredResultTest {
     @DisplayName("multiple value를 반환해야 할 때")
     class Context_with_retrive_multiple_values {
       @Test
-      @DisplayName("정상적으로 multiple value를 반환한다")
+      @DisplayName("정상적으로 multiple value를 돌려준다")
       void it_returns_multiple_values() {
         // when
         ResponseEntity<List> response = restTemplate.getForEntity("/multiple", List.class);
@@ -138,7 +143,7 @@ public class ObservableDeferredResultTest {
     @DisplayName("Json으로 직렬화한 List 값을 반환해야 할 때")
     class Context_with_retrive_json_serialized_list_values {
       @Test
-      @DisplayName("정상적으로 Json으로 직렬화한 List 값을 반환한다")
+      @DisplayName("정상적으로 Json으로 직렬화한 List 값을 돌려준다")
       void it_returns_json_serialized_list_values() {
         // when
         ResponseEntity<List<EventDto>> response = restTemplate.exchange("/event", HttpMethod.GET, null,
@@ -169,8 +174,8 @@ public class ObservableDeferredResultTest {
     @DisplayName("타임아웃이 발생했을 때")
     class Context_with_timeout_connection {
       @Test
-      @DisplayName("정상적으로 에러값을 반환한다")
-      void it_returns_timeout_error() {
+      @DisplayName("정상적으로 에러값을 돌려준다")
+      void it_returns_http_500_error() {
         // when
         ResponseEntity<Object> response = restTemplate.getForEntity("/timeout", Object.class);
         // then

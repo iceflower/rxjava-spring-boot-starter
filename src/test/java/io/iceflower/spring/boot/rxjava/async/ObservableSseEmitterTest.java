@@ -23,6 +23,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 
+/**
+ * A unit test code of ObservableDeferredResult
+ *
+ * @author Jakub Narloch
+ * @author 김영근
+ */
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(
     classes = ObservableSseEmitterTest.Application.class,
@@ -56,6 +62,9 @@ public class ObservableSseEmitterTest {
           new EventDto("JavaOne", getDate(2016, 9, 22))
       ));
     }
+  }
+  private static Date getDate(int year, int month, int day) {
+    return new GregorianCalendar(year, month, day).getTime();
   }
 
   @Nested
@@ -106,9 +115,5 @@ public class ObservableSseEmitterTest {
         Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
       }
     }
-  }
-
-  private static Date getDate(int year, int month, int day) {
-    return new GregorianCalendar(year, month, day).getTime();
   }
 }

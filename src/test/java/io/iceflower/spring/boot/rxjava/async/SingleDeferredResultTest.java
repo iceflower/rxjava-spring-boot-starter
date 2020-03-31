@@ -22,6 +22,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
+/**
+ * A unit test code of SingleDeferredResult
+ *
+ * @author Jakub Narloch
+ * @author 김영근
+ */
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(
     classes = SingleDeferredResultTest.Application.class,
@@ -64,14 +70,13 @@ public class SingleDeferredResultTest {
   @DisplayName("SingleDeferredResult 는")
   class Describe_of_SingleDeferredResult {
     @Nested
-    @DisplayName("단일 값을 받을 때")
+    @DisplayName("단일 값을 전달해야 할때")
     class Context_with_retrive_single_value {
       @Test
-      @DisplayName("성공적으로 값을 받는다")
+      @DisplayName("성공적으로 값을 돌려준다")
       void it_returns_successfully() {
         // when
         ResponseEntity<String> response = restTemplate.getForEntity("/single", String.class);
-
         // then
         Assertions.assertNotNull(response);
         Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -79,15 +84,13 @@ public class SingleDeferredResultTest {
       }
     }
     @Nested
-    @DisplayName("단일 값과 HTTP 상태코드를 함께 받을 때")
+    @DisplayName("단일 값과 HTTP 상태코드를 함께 전달해야 할 때")
     class Context_with_retrieve_single_value_with_status_code {
       @Test
-      @DisplayName("성공적으로 값을 받는다")
+      @DisplayName("성공적으로 값을 돌려준다")
       void it_returns_successfully() {
-
         // when
         ResponseEntity<String> response = restTemplate.getForEntity("/singleWithResponse", String.class);
-
         // then
         Assertions.assertNotNull(response);
         Assertions.assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
@@ -95,15 +98,13 @@ public class SingleDeferredResultTest {
       }
     }
     @Nested
-    @DisplayName("json으로 직렬화한 값을 받을 때")
+    @DisplayName("json으로 직렬화한 값을 전달해 줄 때")
     class Context_with_json_serialized_pojo_value {
       @Test
-      @DisplayName("성공적으로 값을 받는다")
+      @DisplayName("성공적으로 값을 돌려준다")
       void it_returns_successfully() {
-
         // when
         ResponseEntity<EventDto> response = restTemplate.getForEntity("/event", EventDto.class);
-
         // then
         Assertions.assertNotNull(response);
         Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -118,7 +119,6 @@ public class SingleDeferredResultTest {
       void it_returns_http_500_code() {
         // when
         ResponseEntity<Object> response = restTemplate.getForEntity("/throw", Object.class);
-
         // then
         Assertions.assertNotNull(response);
         Assertions.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());

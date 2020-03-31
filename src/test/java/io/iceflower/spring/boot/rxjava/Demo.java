@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,12 +25,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * A unit test code for simple example
+ *
+ * @author Jakub Narloch
+ * @author 김영근
+ */
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(
     classes = Demo.InvoiceResource.class,
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
 )
-@DisplayName("Demo 클래스")
+@DisplayName("예제용 테스트 클래스")
 public class Demo {
   @Autowired
   private TestRestTemplate restTemplate;
@@ -49,24 +56,8 @@ public class Demo {
     }
   }
 
-  @Test
-  public void shouldRetrieveInvoices() {
-
-    // when
-    ResponseEntity<List<Invoice>> response = restTemplate.exchange("/invoices",
-        HttpMethod.GET, null, new ParameterizedTypeReference<List<Invoice>>() {
-        });
-
-    // then
-    Assertions.assertNotNull(response);
-    Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
-    Assertions.assertEquals("Acme", response.getBody().get(0).getTitle());
-  }
-
   private static class Invoice {
-
     private final String title;
-
     private final Date issueDate;
 
     @JsonCreator
@@ -78,9 +69,29 @@ public class Demo {
     public String getTitle() {
       return title;
     }
-
     public Date getIssueDate() {
       return issueDate;
+    }
+  }
+
+  @Nested
+  @DisplayName("기본 사용법은")
+  class Describe_of_Demo {
+    @Nested
+    @DisplayName("Observable (혹은 Single) 객체를 활용하면")
+    class Context_with_retrieve_invoices {
+      @Test
+      @DisplayName("rxjava에 의해 비동기로 값을 돌려준다")
+      void it_returns_async() {
+        // when
+        ResponseEntity<List<Invoice>> response = restTemplate.exchange("/invoices",
+            HttpMethod.GET, null, new ParameterizedTypeReference<List<Invoice>>() {
+            });
+        // then
+        Assertions.assertNotNull(response);
+        Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
+        Assertions.assertEquals("Acme", response.getBody().get(0).getTitle());
+      }
     }
   }
 }

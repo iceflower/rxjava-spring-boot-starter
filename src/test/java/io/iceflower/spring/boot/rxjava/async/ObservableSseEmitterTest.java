@@ -112,14 +112,6 @@ public class ObservableSseEmitterTest {
     }
   }
 
-
-
-
-
-
-
-
-
   private static Date getDate(int year, int month, int day) {
     return new GregorianCalendar(year, month, day).getTime();
   }

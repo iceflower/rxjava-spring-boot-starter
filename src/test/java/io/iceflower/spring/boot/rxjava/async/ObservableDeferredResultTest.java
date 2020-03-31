@@ -87,7 +87,7 @@ public class ObservableDeferredResultTest {
     }
   }
   @Nested
-  @DisplayName("ObservableDeferredResult 테스트")
+  @DisplayName("ObservableDeferredResult 는")
   class Describe_of_ObservableDeferredResult {
     @Nested
     @DisplayName("공백 응답을 반환해야 할 경우")
@@ -105,8 +105,8 @@ public class ObservableDeferredResultTest {
       }
     }
     @Nested
-    @DisplayName("Single value를 반환해야 할 경우")
-    class Context_of_retrive_single_value {
+    @DisplayName("Single value를 반환해야 할 때")
+    class Context_with_retrive_single_value {
       @Test
       @DisplayName("정상적으로 Single value를 반환한다")
       void it_returns_single_value() {
@@ -120,8 +120,8 @@ public class ObservableDeferredResultTest {
       }
     }
     @Nested
-    @DisplayName("multiple value를 반환해야 할 경우")
-    class Context_of_retrive_multiple_values {
+    @DisplayName("multiple value를 반환해야 할 때")
+    class Context_with_retrive_multiple_values {
       @Test
       @DisplayName("정상적으로 multiple value를 반환한다")
       void it_returns_multiple_values() {
@@ -135,8 +135,8 @@ public class ObservableDeferredResultTest {
       }
     }
     @Nested
-    @DisplayName("Json으로 직렬화한 List 값을 반환해야 할 경우")
-    class Context_of_retrive_json_serialized_list_values {
+    @DisplayName("Json으로 직렬화한 List 값을 반환해야 할 때")
+    class Context_with_retrive_json_serialized_list_values {
       @Test
       @DisplayName("정상적으로 Json으로 직렬화한 List 값을 반환한다")
       void it_returns_json_serialized_list_values() {
@@ -152,8 +152,8 @@ public class ObservableDeferredResultTest {
       }
     }
     @Nested
-    @DisplayName("에러값을 반환해야 할 경우")
-    class Context_of_retrive_error_response {
+    @DisplayName("에러값을 반환해야 할 때")
+    class Context_with_retrive_error_response {
       @Test
       @DisplayName("정상적으로 에러값을 반환한다")
       void it_returns_error_response() {
@@ -165,16 +165,14 @@ public class ObservableDeferredResultTest {
         Assertions.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
       }
     }
-
     @Nested
-    @DisplayName("타임아웃이 발생했을 경우")
-    class Context_of_timeout_connection {
+    @DisplayName("타임아웃이 발생했을 때")
+    class Context_with_timeout_connection {
       @Test
       @DisplayName("정상적으로 에러값을 반환한다")
       void it_returns_timeout_error() {
         // when
         ResponseEntity<Object> response = restTemplate.getForEntity("/timeout", Object.class);
-
         // then
         Assertions.assertNotNull(response);
         Assertions.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());

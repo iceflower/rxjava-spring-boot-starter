@@ -59,10 +59,10 @@ public class ObservableSseEmitterTest {
   }
 
   @Nested
-  @DisplayName("ObservableDeferredResult 테스트")
+  @DisplayName("ObservableDeferredResult 는")
   class Describe_of_ObservableSseEmitter {
     @Nested
-    @DisplayName("SSE 데이터를 전송받는 경우")
+    @DisplayName("SSE 데이터를 전송받아야 할 때")
     class Context_with_retrieve_sse_data {
       @Test
       @DisplayName("데이터를 성공적으로 전달받는다")
@@ -76,14 +76,12 @@ public class ObservableSseEmitterTest {
         Assertions.assertEquals("data:single value\n\n", response.getBody());
       }
     }
-
     @Nested
-    @DisplayName("SSE 메시지를 여러개 받는 경우")
+    @DisplayName("SSE 메시지를 한번에 여러 개 받아야 할 때")
     class Context_with_retrieve_multiple_messages {
       @Test
       @DisplayName("데이터를 성공적으로 전달받는다")
       void it_returns_successfully() {
-
         // when
         ResponseEntity<String> response = restTemplate.getForEntity("/messages", String.class);
 
@@ -93,9 +91,8 @@ public class ObservableSseEmitterTest {
         Assertions.assertEquals("data:message 1\n\ndata:message 2\n\ndata:message 3\n\n", response.getBody());
       }
     }
-
     @Nested
-    @DisplayName("JSON으로 직렬화된 SSE 메시지를 여러개 받는 경우")
+    @DisplayName("JSON으로 직렬화된 SSE 메시지를 여러개 받아야 할 때")
     class Context_with_retrieve_json_over_sse_multiple_messages {
       @Test
       @DisplayName("데이터를 성공적으로 전달받는다")
@@ -108,7 +105,6 @@ public class ObservableSseEmitterTest {
         Assertions.assertNotNull(response);
         Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
       }
-
     }
   }
 

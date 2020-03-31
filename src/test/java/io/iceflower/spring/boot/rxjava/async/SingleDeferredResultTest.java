@@ -60,15 +60,12 @@ public class SingleDeferredResultTest {
     }
   }
 
-
   @Nested
-  @DisplayName("SingleDeferredResult 테스트")
+  @DisplayName("SingleDeferredResult 는")
   class Describe_of_SingleDeferredResult {
-
     @Nested
-    @DisplayName("단일 값을 받을 경우")
+    @DisplayName("단일 값을 받을 때")
     class Context_with_retrive_single_value {
-
       @Test
       @DisplayName("성공적으로 값을 받는다")
       void it_returns_successfully() {
@@ -81,11 +78,9 @@ public class SingleDeferredResultTest {
         Assertions.assertEquals("single value", response.getBody());
       }
     }
-
     @Nested
-    @DisplayName("단일 값과 HTTP 상태코드를 함께 받을 경우")
+    @DisplayName("단일 값과 HTTP 상태코드를 함께 받을 때")
     class Context_with_retrieve_single_value_with_status_code {
-
       @Test
       @DisplayName("성공적으로 값을 받는다")
       void it_returns_successfully() {
@@ -99,9 +94,8 @@ public class SingleDeferredResultTest {
         Assertions.assertEquals("single value", response.getBody());
       }
     }
-
     @Nested
-    @DisplayName("json으로 직렬화한 값을 받을 경우")
+    @DisplayName("json으로 직렬화한 값을 받을 때")
     class Context_with_json_serialized_pojo_value {
       @Test
       @DisplayName("성공적으로 값을 받는다")
@@ -116,14 +110,12 @@ public class SingleDeferredResultTest {
         Assertions.assertEquals("Spring.io", response.getBody().getName());
       }
     }
-
     @Nested
-    @DisplayName("오류가 발생했을 경우")
+    @DisplayName("오류가 발생했을 때")
     class Context_with_retrieve_error_response {
       @Test
       @DisplayName("500 에러를 받는다")
       void it_returns_http_500_code() {
-
         // when
         ResponseEntity<Object> response = restTemplate.getForEntity("/throw", Object.class);
 
@@ -131,7 +123,6 @@ public class SingleDeferredResultTest {
         Assertions.assertNotNull(response);
         Assertions.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
       }
-
     }
   }
 }

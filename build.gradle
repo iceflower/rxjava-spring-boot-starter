@@ -7,8 +7,6 @@ buildscript {
     }
 }
 
-
-
 plugins {
     id 'java'
     id 'maven'
@@ -20,24 +18,15 @@ plugins {
 
 
 apply plugin: 'idea'
-apply plugin: 'com.github.kt3k.coveralls'
-apply plugin: 'jacoco'
-apply plugin: 'com.novoda.bintray-release'
+apply plugin: 'maven'
+apply plugin: 'signing'
+
 
 sourceCompatibility = 11
 
 group = "io.iceflower"
 archivesBaseName="rxjava-spring-boot-starter"
-version= '3.0.1'
-
-
-jacocoTestReport {
-    enabled = true
-    reports {
-        xml.enabled = true // coveralls plugin depends on xml format report
-        html.enabled = true
-    }
-}
+version= '3.0.2'
 
 
 bootJar {
@@ -59,15 +48,68 @@ test {
     useJUnitPlatform()
 }
 
+task javadocJar(type: Jar) {
+    classifier = 'javadoc'
+    from javadoc
+}
 
-publish {
-    repoName = "iceflower"
-    userOrg = 'iceflower01'
-    groupId = 'io.iceflower'
-    artifactId = 'rxjava-spring-boot-starter'
-    publishVersion = '3.0.1'
-    desc = 'rxjava starter for springboot webmvc'
-    website = 'https://github.com/iceflower/rxjava-spring-boot-starter'
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+artifacts {
+    archives javadocJar, sourcesJar
+}
+
+signing {
+    sign configurations.archives
+}
+
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+            repository(url: "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                authentication(userName: ossrhUsername, password: ossrhPassword)
+            }
+
+            snapshotRepository(url: "https://s01.oss.sonatype.org/content/repositories/snapshots/") {
+                authentication(userName: ossrhUsername, password: ossrhPassword)
+            }
+
+            pom.project {
+                name 'rxjava-spring-boot-starter'
+                packaging 'jar'
+                // optionally artifactId can be defined here
+                description 'A Spring Boot starter for RxJava3 integration'
+                url 'https://github.com/iceflower/rxjava-spring-boot-starter'
+
+                scm {
+                    connection 'scm:svn:http://foo.googlecode.com/svn/trunk/'
+                    developerConnection 'scm:svn:https://foo.googlecode.com/svn/trunk/'
+                    url 'http://foo.googlecode.com/svn/trunk/'
+                }
+
+                licenses {
+                    license {
+                        name 'The Apache License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id 'iceflower'
+                        name 'eletronic druid'
+                        email 'iceflower01@gmail.com'
+                    }
+                }
+            }
+        }
+    }
 }
 
 
